@@ -65,7 +65,8 @@ public class GraqlSteps {
 
     @Given("graql define")
     public void graql_define(List<String> defineQueryStatements) {
-        GraqlQuery graqlQuery = Graql.parse(String.join("\n", defineQueryStatements));tx.execute(graqlQuery);
+        GraqlQuery graqlQuery = Graql.parse(String.join("\n", defineQueryStatements));
+        tx.execute(graqlQuery);
         tx.commit();
         tx = session.transaction().write();
     }
