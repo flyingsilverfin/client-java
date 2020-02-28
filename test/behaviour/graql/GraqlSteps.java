@@ -65,8 +65,7 @@ public class GraqlSteps {
 
     @Given("graql define")
     public void graql_define(List<String> defineQueryStatements) {
-        GraqlQuery graqlQuery = Graql.parse(String.join("\n", defineQueryStatements));
-        tx.execute(graqlQuery);
+        GraqlQuery graqlQuery = Graql.parse(String.join("\n", defineQueryStatements));tx.execute(graqlQuery);
         tx.commit();
         tx = session.transaction().write();
     }
@@ -92,8 +91,8 @@ public class GraqlSteps {
         }
     }
 
-    @Then("there is/are {number} answer(s)")
-    public void answer_quantity_assertion(int expectedAnswers) {
+    @Then("the answer size is: {number}")
+    public void answer_size_is(int expectedAnswers) {
         assertEquals(expectedAnswers, answers.size());
     }
 
