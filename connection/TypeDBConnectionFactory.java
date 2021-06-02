@@ -23,6 +23,8 @@ package com.vaticle.typedb.client.connection;
 
 import com.vaticle.typedb.client.common.exception.TypeDBClientException;
 import com.vaticle.typedb.client.common.rpc.TypeDBStub;
+import com.vaticle.typedb.client.connection.cluster.ClusterServerStub;
+import com.vaticle.typedb.client.connection.core.CoreStub;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NettyChannelBuilder;
@@ -35,6 +37,7 @@ import java.nio.file.Path;
 public abstract class TypeDBConnectionFactory {
 
     public abstract ManagedChannel newManagedChannel(String address);
+
     public abstract TypeDBStub newTypeDBStub(ManagedChannel channel);
 
     ManagedChannel plainTextChannel(String address) {
@@ -51,8 +54,8 @@ public abstract class TypeDBConnectionFactory {
         }
 
         @Override
-        public TypeDBStub.Core newTypeDBStub(ManagedChannel channel) {
-            return TypeDBStub.core(channel);
+        public TypeDBStub newTypeDBStub(ManagedChannel channel) {
+            return CoreStub.create(channel);
         }
     }
 
@@ -81,8 +84,8 @@ public abstract class TypeDBConnectionFactory {
         }
 
         @Override
-        public TypeDBStub.ClusterServer newTypeDBStub(ManagedChannel channel) {
-            return TypeDBStub.clusterServer(username, password, channel);
+        public ClusterServerStub newTypeDBStub(ManagedChannel channel) {
+            return ClusterServerStub.create(username, password, channel);
         }
 
         private ManagedChannel TLSChannel(String address) {
